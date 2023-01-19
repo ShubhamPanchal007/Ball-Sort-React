@@ -1,17 +1,14 @@
 import { ChangeEvent, MutableRefObject, useState } from "react";
-
+import buffaloMilk from "../assets/buffalomilk.png";
+import cowMilk from "../assets/cowmilk2.png";
+import ghee from "../assets/ghee2.png";
+import formBg from "../assets/formBg.png";
 type props = {
-  Gamescore: number;
+  GameTime: string;
   forwardedRef: MutableRefObject<HTMLButtonElement | null>;
   startGame: () => void;
-  confettiHandler: () => void;
 };
-function RegistrationForm({
-  Gamescore,
-  forwardedRef,
-  startGame,
-  confettiHandler,
-}: props) {
+function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
   const [showForm, setShowform] = useState(true);
   const [userData, setUserData] = useState({
     name: "",
@@ -54,26 +51,25 @@ function RegistrationForm({
     if (isFormValid()) {
       setShowform((prev) => !prev);
       startGame();
-      confettiHandler();
     }
   };
   return (
     <>
       <div
         className={`${
-          showForm ? "" : " -translate-y-[80rem] invisible"
+          showForm ? "" : " -translate-y-[100rem] invisible"
         } absolute w-full flex justify-center  backdrop-blur-[2px] z-40 transition ease-in-out delay-150 duration-700 `}
       >
         <form
           className="max-w-lg  bg-gradient-to-tr from-[#ccecff] via-[#82d5ff] to-[#ccecff] rounded p-10 z-40"
-          action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSdKfDiLu5fprYhI9Hbhymuf3K7akbZ7QUdbhlXieSzyZnMQrQ/formResponse"
+          action="https://docs.google.com/forms/u/0/d/e/1FAIpQLSe4NyKfb-Mviq4G8l-OqHmN-2iJEYrxvVnBrpEwRMXPWLk95w/formResponse"
           // onSubmit={(e: React.SyntheticEvent) => handleReg(e)}
         >
           <div className="text-center  mb-5 text-3xl italic font-Game">
             Country Delight's Color Memorization Game
           </div>
           <img
-            src="https://lh5.googleusercontent.com/dlA_x4giofI8BZwxPVgZ0pM6joyF5oGV7izDjjqOtq4HFcoizhmOsFcnLyp-POJL7M7KeJLBS2qp5Ty6Z6hyKd0gsRjJ6cUg4l-U2XpH01uhhK5l0BgGOPJyn5vNXsMKJA=w1600"
+            src={formBg}
             className="object-contain bg-cover mb-5 rounded"
             alt=""
           />
@@ -81,7 +77,7 @@ function RegistrationForm({
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
-                htmlFor="entry.1367960918"
+                htmlFor="entry.888937878"
               >
                 Name*
               </label>
@@ -89,7 +85,7 @@ function RegistrationForm({
                 className="appearance-none block w-full  text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none bg-white"
                 id="grid-first-name"
                 type="text"
-                name="entry.1367960918"
+                name="entry.888937878"
                 placeholder="Ex- Abhay"
                 required={true}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -103,14 +99,14 @@ function RegistrationForm({
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
-                htmlFor="entry.879350510"
+                htmlFor="entry.1447277430"
               >
                 Contact Number*
               </label>
               <input
                 className="appearance-none block w-full  text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none bg-white"
                 type="tel"
-                name="entry.879350510"
+                name="entry.1447277430"
                 placeholder="Ex- 7098-89...."
                 required={true}
                 max={10}
@@ -129,7 +125,7 @@ function RegistrationForm({
             <div className="flex ">
               <label htmlFor="Omaxe Heights">
                 <input
-                  name="entry.729138774"
+                  name="entry.1454644454"
                   type={"radio"}
                   value="Omaxe Heights"
                   id="Omaxe Heights"
@@ -144,7 +140,7 @@ function RegistrationForm({
             <div className="flex mt-1">
               <label htmlFor="Pan Oasis">
                 <input
-                  name="entry.729138774"
+                  name="entry.1454644454"
                   type={"radio"}
                   id="Pan Oasis"
                   value={"Pan Oasis"}
@@ -159,7 +155,7 @@ function RegistrationForm({
               <label htmlFor="RPS Green Valley">
                 {" "}
                 <input
-                  name="entry.729138774"
+                  name="entry.1454644454"
                   type={"radio"}
                   id="RPS Green Valley"
                   value={"RPS Green Valley"}
@@ -173,7 +169,7 @@ function RegistrationForm({
             <div className="flex mt-1">
               <label htmlFor="Express Zeinth">
                 <input
-                  name="entry.729138774"
+                  name="entry.1454644454"
                   type={"radio"}
                   id="Express Zeinth"
                   value="Express Zeinth"
@@ -212,14 +208,14 @@ function RegistrationForm({
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
               <label
                 className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="entry.2108872300"
+                htmlFor="entry.1916227501"
               >
                 Flat Number*
                 <input
                   className="appearance-none block w-full  text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-2"
                   id="grid-zip"
                   type="text"
-                  name="entry.2108872300"
+                  name="entry.1916227501"
                   placeholder="Ex- 90F1"
                   required={true}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
@@ -228,25 +224,39 @@ function RegistrationForm({
                 />
               </label>
             </div>
-            <p className="italic text-gray-800 text-sm ml-4 mb-4 items-center">
+            <p className="italic text-gray-800 font-bold text-sm ml-4 mb-4 items-center">
               *Your game score will be automatically applied after you play*
             </p>
             <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-              <label
-                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                htmlFor="entry.1423849770"
-              >
+              <label className=" invisible" htmlFor="entry.1963432759">
                 Your Game Score
                 <input
-                  className="appearance-none block w-full  text-gray-400 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 mt-2"
+                  className="  text-gray-400 border border-gray-200 rounded  leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                   id="grid-zip"
                   type="text"
-                  name="entry.1423849770"
-                  value={Gamescore}
+                  name="entry.1963432759"
+                  value={GameTime}
                   placeholder=""
                 />
               </label>
             </div>
+          </div>
+          <div className="flex justify-center">
+            <img
+              src={cowMilk}
+              alt="tasty cowmilk"
+              className="object-contain h-28 w-28 sm:"
+            />
+            <img
+              src={ghee}
+              alt="Danedaar Ghee"
+              className="object-contain h-28 w-28 sm:"
+            />
+            <img
+              src={buffaloMilk}
+              alt="Healthy yummy Bread"
+              className="object-contain h-28 w-28 sm:"
+            />
           </div>
 
           <div className="w-full flex justify-end mt-5">

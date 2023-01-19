@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, MutableRefObject, useEffect, useState } from "react";
 import yellowBall from "../assets/bread.png";
 import greenBall from "../assets/cowmilk2.png";
 import bg from "../assets/countryBg3.jpeg";
 import countryLogo from "../assets/Stamp.png";
-import Confetti from "./Confetti";
+import Confetti from "react-confetti";
 import ballIsActiveSound from "../assets/sound/ballSound.wav";
 import ballIsInserted from "../assets/sound/insertSound2.wav";
-import winSound from "../assets/sound/WinSound.wav";
+import RegistrationForm from "./RegistrationForm";
+import playStartSound from "../assets/sound/winSound.wav";
+
 type Ball = { ballColor: string; bottleId: string };
 function BallSort() {
   const [bottle1, setBottle1] = useState<Ball[]>([
@@ -23,6 +25,11 @@ function BallSort() {
   const [emptyBottle, setEmptyBottle] = useState<Ball[]>([]);
   const [activeBall, setActiveBall] = useState({ ballColor: "", bottleId: "" });
   const [time, setTime] = useState({ min: 0, sec: 0 });
+  const [confettiProps, setConfettiProps] = useState({
+    loop: true,
+    showConfetti: true,
+  });
+  const RegistrationButtonRef = createRef<HTMLButtonElement | null>();
   const BallsMovementHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     // Bottle1
@@ -132,8 +139,8 @@ function BallSort() {
   console.log(activeBall.ballColor + "" + activeBall.bottleId);
 
   // Timer
-  let interval: any;
-  useEffect(() => {
+  let interval: ReturnType<typeof setInterval>;
+  const timer = () => {
     let firstTime = Date.now();
     interval = setInterval(() => {
       let currentTime = Date.now() - firstTime;
@@ -145,8 +152,7 @@ function BallSort() {
         min,
       }));
     }, 1000);
-    return () => clearInterval(interval);
-  }, []);
+  };
 
   // Winning condition
   useEffect(() => {
@@ -188,14 +194,46 @@ function BallSort() {
             { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
           ]))
     ) {
-      clearInterval(interval);
-      console.log("WIN");
+      // Submit form
+      RegistrationButtonRef.current?.click();
     }
   }, [activeBall]);
+  const startGame = () => {
+    // Reset The whole component
+    // Reset Bottles
+    setBottle1([
+      { ballColor: "bg-yellow-700", bottleId: "bottle1" },
+      { ballColor: "bg-green-700", bottleId: "bottle1" },
+      { ballColor: "bg-green-700", bottleId: "bottle1" },
+    ]);
+    setBottle2([
+      { ballColor: "bg-green-700", bottleId: "bottle2" },
+      { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+      { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+    ]);
+    setEmptyBottle([]);
+
+    setActiveBall({ ballColor: "", bottleId: "" });
+
+    setConfettiProps({
+      loop: false,
+      showConfetti: true,
+    });
+    // start the timer.
+    timer();
+    // Play the  start audio.
+    const sound = new Audio();
+    sound.src = playStartSound;
+    sound.play();
+  };
 
   return (
     <>
-      <Confetti />
+      {confettiProps.showConfetti ? (
+        <Confetti recycle={confettiProps.loop} />
+      ) : (
+        ""
+      )}
 
       {/* Main Background */}
       <img
@@ -212,6 +250,12 @@ function BallSort() {
           className="absolute h-72 w-72 object-contain"
         />
       </div>
+      {/* Registration form */}
+      <RegistrationForm
+        GameTime={`${time.min}min ${time.sec}sec`}
+        startGame={startGame}
+        forwardedRef={RegistrationButtonRef}
+      />
       {/* Timer */}
       <div className="text-center font-Game mt-16 text-lg sm:text-2xl sm:mt-12">
         {[time.min, ":", time.sec]}
