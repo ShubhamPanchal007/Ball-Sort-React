@@ -66,7 +66,7 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
           // onSubmit={(e: React.SyntheticEvent) => handleReg(e)}
         >
           <div className="text-center  mb-5 text-3xl italic font-Game">
-            Country Delight's Color Memorization Game
+            Play and win with Country Delight's ball Sort Game
           </div>
           <img
             src={formBg}
