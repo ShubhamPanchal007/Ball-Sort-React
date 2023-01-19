@@ -1,4 +1,4 @@
-import React, { createRef, MutableRefObject, useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import yellowBall from "../assets/bread.png";
 import greenBall from "../assets/cowmilk2.png";
 import bg from "../assets/countryBg3.jpeg";
@@ -7,7 +7,7 @@ import Confetti from "react-confetti";
 import ballIsActiveSound from "../assets/sound/ballSound.wav";
 import ballIsInserted from "../assets/sound/insertSound2.wav";
 import RegistrationForm from "./RegistrationForm";
-import playStartSound from "../assets/sound/winSound.wav";
+import playStartSound from "../assets/sound/WinSound.wav";
 
 type Ball = { ballColor: string; bottleId: string };
 function BallSort() {
