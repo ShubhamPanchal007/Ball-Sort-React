@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import yellowBall from "../assets/yBall.png";
-import greenBall from "../assets/gBall.png";
+import yellowBall from "../assets/bread.png";
+import greenBall from "../assets/cowmilk2.png";
 import bg from "../assets/countryBg3.jpeg";
 import countryLogo from "../assets/Stamp.png";
 import Confetti from "./Confetti";
@@ -19,9 +19,10 @@ function BallSort() {
     { ballColor: "bg-yellow-700", bottleId: "bottle2" },
     { ballColor: "bg-yellow-700", bottleId: "bottle2" },
   ]);
-  const [showConfetti, setShowConfetti] = useState(false);
+
   const [emptyBottle, setEmptyBottle] = useState<Ball[]>([]);
   const [activeBall, setActiveBall] = useState({ ballColor: "", bottleId: "" });
+  const [time, setTime] = useState({ min: 0, sec: 0 });
   const BallsMovementHandler = (e: React.MouseEvent) => {
     e.preventDefault();
     // Bottle1
@@ -127,45 +128,100 @@ function BallSort() {
       }
     }
   };
+
   console.log(activeBall.ballColor + "" + activeBall.bottleId);
+
+  // Timer
+  let interval: any;
+  useEffect(() => {
+    let firstTime = Date.now();
+    interval = setInterval(() => {
+      let currentTime = Date.now() - firstTime;
+      let sec = Math.floor((currentTime / 1000) % 60);
+      let min = Math.floor(currentTime / 1000 / 60);
+
+      setTime(() => ({
+        sec,
+        min,
+      }));
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Winning condition
   useEffect(() => {
     if (
-      JSON.stringify(bottle1) ===
+      (JSON.stringify(bottle1) ===
         JSON.stringify([
           { ballColor: "bg-green-700", bottleId: "bottle1" },
           { ballColor: "bg-green-700", bottleId: "bottle1" },
           { ballColor: "bg-green-700", bottleId: "bottle1" },
-        ]) &&
-      JSON.stringify(bottle2) ===
+        ]) ||
+        JSON.stringify(bottle2) ===
+          JSON.stringify([
+            { ballColor: "bg-green-700", bottleId: "bottle2" },
+            { ballColor: "bg-green-700", bottleId: "bottle2" },
+            { ballColor: "bg-green-700", bottleId: "bottle2" },
+          ]) ||
+        JSON.stringify(emptyBottle) ===
+          JSON.stringify([
+            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
+          ])) &&
+      (JSON.stringify(bottle1) ===
         JSON.stringify([
-          { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-          { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-          { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-        ])
+          { ballColor: "bg-yellow-700", bottleId: "bottle1" },
+          { ballColor: "bg-yellow-700", bottleId: "bottle1" },
+          { ballColor: "bg-yellow-700", bottleId: "bottle1" },
+        ]) ||
+        JSON.stringify(bottle2) ===
+          JSON.stringify([
+            { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+            { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+            { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+          ]) ||
+        JSON.stringify(emptyBottle) ===
+          JSON.stringify([
+            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
+          ]))
     ) {
-      const sound = new Audio();
-      sound.src = winSound;
-      sound.play();
-      setShowConfetti(true);
+      clearInterval(interval);
       console.log("WIN");
     }
   }, [activeBall]);
+
   return (
     <>
-      <>{showConfetti ? <Confetti /> : ""}</>
+      <Confetti />
+
+      {/* Main Background */}
       <img
         src={bg}
         alt="Most Trusted Dairy Brand"
         className="w-screen h-screen absolute z-[-1] bg-blend-darken object-cover "
       />
+
+      {/* Country Delight Logo */}
       <div className="flex justify-center">
-        <img src={countryLogo} alt="Country Delight" className="absolute" />
+        <img
+          src={countryLogo}
+          alt="Country Delight"
+          className="absolute h-72 w-72 object-contain"
+        />
       </div>
+      {/* Timer */}
+      <div className="text-center font-Game mt-16 text-lg sm:text-2xl sm:mt-12">
+        {[time.min, ":", time.sec]}
+      </div>
+      {/* Bottles */}
       <div className="flex items-center h-screen w-full  justify-center rounded-full">
         <div className="flex space-x-10">
           {/* BOTTLE 1 */}
           <div
-            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-52 w-16  rounded-b-full cursor-pointer  border-t-4 rounded-t-lg backdrop-blur-sm"
+            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20  rounded-b-full cursor-pointer  border-t-4 rounded-t-lg backdrop-blur-sm"
             id="bottle1"
             onClick={(e: React.MouseEvent<HTMLDivElement>) =>
               BallsMovementHandler(e)
@@ -185,7 +241,7 @@ function BallSort() {
                   i == bottle1.length - 1 &&
                   activeBall.ballColor == ball.ballColor &&
                   activeBall.bottleId == ball.bottleId
-                    ? "backdrop-blur-sm   -translate-y-60 duration-300 ease-in-out"
+                    ? "-translate-y-60 duration-300 ease-in-out"
                     : "duration-300 ease-in-out"
                 }
             `}
@@ -195,7 +251,7 @@ function BallSort() {
           {/* BOTTLE 2 */}
 
           <div
-            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-52 w-16 rounded-b-full cursor-pointer border-t-4 backdrop-blur-sm"
+            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20 rounded-b-full cursor-pointer border-t-4 backdrop-blur-sm"
             id="bottle2"
             onClick={(e: React.MouseEvent<HTMLDivElement>) =>
               BallsMovementHandler(e)
@@ -215,17 +271,18 @@ function BallSort() {
                   i == bottle2.length - 1 &&
                   activeBall.ballColor == ball.ballColor &&
                   activeBall.bottleId == ball.bottleId
-                    ? `backdrop-blur-sm   -translate-y-48 duration-300 ease-in-out`
+                    ? `-translate-y-48 duration-300 ease-in-out`
                     : "duration-300 ease-in-out"
                 }`}
               />
             ))}
           </div>
+
           {/* EMPTY BOTTLE  */}
 
           <div>
             <div
-              className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-52 w-16  rounded-b-full cursor-pointer   border-t-4 backdrop-blur-sm
+              className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20  rounded-b-full cursor-pointer   border-t-4 backdrop-blur-sm
           "
               id="emptyBottle"
               onClick={(e: React.MouseEvent<HTMLDivElement>) =>
@@ -246,7 +303,7 @@ function BallSort() {
                     i == emptyBottle.length - 1 &&
                     activeBall.ballColor == ball.ballColor &&
                     activeBall.bottleId == ball.bottleId
-                      ? "backdrop-blur-sm   -translate-y-60 duration-300 ease-in-out"
+                      ? "-translate-y-60 duration-300 ease-in-out"
                       : "duration-300 ease-in-out"
                   }`}
                 />
