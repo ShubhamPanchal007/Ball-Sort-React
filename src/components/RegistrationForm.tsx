@@ -3,6 +3,7 @@ import buffaloMilk from "../assets/buffalomilk.png";
 import cowMilk from "../assets/cowmilk2.png";
 import ghee from "../assets/ghee2.png";
 import formBg from "../assets/formBg.png";
+import { trie } from "./utils";
 type props = {
   GameTime: string;
   forwardedRef: MutableRefObject<HTMLButtonElement | null>;
@@ -120,7 +121,7 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
             </div>
           </div>
 
-          <div className=" relative w-64 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 items-center">
+          {/* <div className=" relative w-64 uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 items-center">
             <p className="text-sm mb-2">Select Society*</p>
             <div className="flex ">
               <label htmlFor="Omaxe Heights">
@@ -180,6 +181,29 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
                 Express Zeinth
               </label>
             </div>
+          </div> */}
+          {/*  */}
+          <div className="w-full mb-6 md:mb-0">
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
+              htmlFor="entry.888937878"
+            >
+              Society*
+            </label>
+            <input
+              className="appearance-none block w-full  text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none bg-white"
+              id="grid-first-name"
+              type="text"
+              name="entry.888937878"
+              placeholder="Ex- Abhay"
+              required={true}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                console.log(trie.search(`${e.target.value}`))
+              }
+            />
+            {/* <p className="text-red-500 text-xs italic">
+              Please fill out this field.
+            </p> */}
           </div>
           <div className="flex flex-wrap -mx-3 mb-6 mt-4">
             <div className="w-full px-3">
