@@ -71,8 +71,8 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
     <>
       <div
         className={`${
-          showForm ? "" : " -translate-y-[100rem] invisible"
-        } absolute w-full flex justify-center  backdrop-blur-[2px] z-40 transition ease-in-out delay-150 duration-700 `}
+          showForm ? "" : " -translate-y-[100rem]"
+        } absolute w-full flex justify-center  backdrop-blur-[2px] z-40 transition ease-in-out delay-150 duration-700 maxheight`}
       >
         <form
           className="max-w-lg  bg-gradient-to-tr from-[#ccecff] via-[#82d5ff] to-[#ccecff] rounded p-10 z-40"

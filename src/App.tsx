@@ -3,7 +3,7 @@ import BallSort from "./components/BallSort";
 
 function App() {
   return (
-    <div>
+    <div className="h-screen overflow-hidden">
       <BallSort />
     </div>
   );
