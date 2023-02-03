@@ -1,4 +1,10 @@
-import { ChangeEvent, MutableRefObject, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEventHandler,
+  MutableRefObject,
+  SetStateAction,
+  useState,
+} from "react";
 import buffaloMilk from "../assets/buffalomilk.png";
 import cowMilk from "../assets/cowmilk2.png";
 import ghee from "../assets/ghee2.png";
@@ -18,6 +24,8 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
     flatNumber: "",
     GameScore: 0,
   });
+  const [suggestions, setSuggestions] = useState<String[]>([]);
+  const [society, setSociety] = useState<string>("");
   const isFormValid = () => {
     const { name, contact, flatNumber, society } = userData;
     console.log(userData);
@@ -50,9 +58,14 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
   // };
   const handleFormVisibility = () => {
     if (isFormValid()) {
+      console.log(userData)
       setShowform((prev) => !prev);
       startGame();
     }
+  };
+  const suggestionHandler = (query: string) => {
+    setSociety(query);
+    setUserData({ ...userData, society: query });
   };
   return (
     <>
@@ -186,24 +199,56 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
           <div className="w-full mb-6 md:mb-0">
             <label
               className="block uppercase tracking-wide text-gray-700 text-sm font-bold mb-2"
-              htmlFor="entry.888937878"
+              htmlFor="entry.1454644454"
             >
               Society*
             </label>
             <input
-              className="appearance-none block w-full  text-gray-700 border  rounded py-3 px-4 mb-3 leading-tight focus:outline-none bg-white"
+              className="appearance-none block w-full  text-gray-700 border  rounded py-3 px-4  leading-tight focus:outline-none bg-white"
               id="grid-first-name"
-              type="text"
-              name="entry.888937878"
-              placeholder="Ex- Abhay"
+              type="search"
+              name="entry.1454644454"
+              placeholder="Ex- RPS Green valley"
               required={true}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                console.log(trie.search(`${e.target.value}`))
-              }
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                suggestionHandler(e.target.value);
+                setSuggestions(() => trie.search(`${e.target.value}`));
+              }}
+              value={society}
             />
-            {/* <p className="text-red-500 text-xs italic">
-              Please fill out this field.
-            </p> */}
+            <div className=" absolute bg-gray-50 z-30 ">
+              {suggestions?.map((suggestion, i) => (
+                <div
+                  key={i}
+                  className="hover:bg-gray-100 flex justify-between pr-3 border-gray-200 border-y"
+                  onClick={(e: any) => {
+                    suggestionHandler(e.currentTarget.innerText);
+                    setSuggestions([]);
+                  }}
+                >
+                  <h5 className="text-gray-700 font-bold pl-4  pr-10 mt-2 cursor-pointer">
+                    {suggestion}
+                  </h5>
+
+                  <div className="flex items-center">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1}
+                      stroke="gray"
+                      className="w-3 h-3"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="flex flex-wrap -mx-3 mb-6 mt-4">
             <div className="w-full px-3">
@@ -259,6 +304,8 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
                   id="grid-zip"
                   type="text"
                   name="entry.1963432759"
+                  // TO supress the warning
+                  onChange={() => {}}
                   value={GameTime}
                   placeholder=""
                 />
@@ -294,7 +341,7 @@ function RegistrationForm({ GameTime, forwardedRef, startGame }: props) {
                 viewBox="0 0 24 24"
                 strokeWidth={1.5}
                 stroke="currentColor"
-                className="w-5 h-5 rotate-6 fill-red-500 mr-1"
+                className="w-5 h-5 rotate-6 fill-red-500 mr-1 "
               >
                 <path
                   strokeLinecap="round"
