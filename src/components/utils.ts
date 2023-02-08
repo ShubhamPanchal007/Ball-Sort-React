@@ -1,4 +1,51 @@
 // AutoComplete functionality
+
+let words = [
+  "Aditya urban casa",
+  "Ajnara 121",
+  "Ajnara daffodils",
+  "Amrapali platinum",
+  "Amrapali sapphire",
+  "Amrapali village",
+  "Ansal esencia",
+  "Ansal heights",
+  "Ashiana anmol",
+  "Bptp park grandeura",
+  "Bptp park resort",
+  "Chintel paradiso",
+  "Civitech sampriti",
+  "Devaan heights",
+  "DLF ultima",
+  "Emaar palm gurgaon",
+  "Emaar palm heights",
+  "Engineer park society",
+  "Emerald heights",
+  "Fortune residency",
+  "Gaur grandeur",
+  "Gardenia glory",
+  "Gpl eden heights",
+  "Grand heritage",
+  "Gurgaon one",
+  "Happy homes",
+  "JM aroma",
+  "JM Florence",
+  "JM orchid",
+  "Maxblis white House",
+  "Nirala estate",
+  "Omaxe green Valley",
+  "Omaxe new height",
+  "Park Avenue",
+  "Pan oasis",
+  "Paramount Floraville",
+  "Paras seasons",
+  "Platinum heights",
+  "RPS green valley",
+  "Shri radha apra garden",
+  "Shri radha sky",
+  "Supertech ecociti",
+  "Vipul lavanya",
+];
+
 class TrieNode {
   letter: string;
   children: { [key: string]: TrieNode };
@@ -17,7 +64,6 @@ class Trie {
   constructor() {
     this.root = new TrieNode("");
   }
-
   insert(word: string) {
     let current = this.root;
     for (let i = 0; i < word.length; i++) {
@@ -48,8 +94,10 @@ class Trie {
   _searchWords(node: TrieNode, prefix: string, words: string[]) {
     if (node.endOfWord) {
       words.push(prefix);
+      return;
     }
     for (let child in node.children) {
+      console.log(child);
       this._searchWords(node.children[child], prefix + child, words);
     }
   }
@@ -57,54 +105,9 @@ class Trie {
 
 export let trie = new Trie();
 
-let words = [
-  "Omaxe green Valley",
-  "Pan oasis",
-  "Gardenia glory",
-  "DLF ultima",
-  "Grand heritage",
-  "Ajnara 121",
-  "Fortune residency",
-  "Omaxe new height",
-  "Gaur grandeur",
-  "Bptp park resort",
-  "Nirala estate",
-  "Bptp park grandeura",
-  "Ansal heights",
-  "Platinum heights",
-  "Park Avenue",
-  "Amrapali platinum",
-  "Paramount Floraville",
-  "Paras seasons",
-  "Ajnara daffodils",
-  "Supertech ecociti",
-  "Happy homes",
-  "Aditya urban casa",
-  "Maxblis white House",
-  "Devaan heights",
-  "Engineer park society",
-  "Ansal esencia",
-  "Ashiana anmol",
-  "Vipul lavanya",
-  "Civitech sampriti",
-  "Jm aroma",
-  "Emaar palm heights",
-  "Emaar palm gurgaon",
-  "Gurgaon one",
-  "Ats pristin",
-  "JM Florence",
-  "JM orchid",
-  "Shri radha sky",
-  "Shri radha apra garden",
-  "Emerald heights",
-  "Gpl eden heights",
-  "Amrapali sapphire",
-  "Amrapali village",
-  "Chintel paradiso",
-  "rps green valley",
-];
-
+// Insert Words
 for (let word of words) {
   trie.insert(word);
 }
+
 
