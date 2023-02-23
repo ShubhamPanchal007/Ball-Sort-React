@@ -8,6 +8,7 @@ import ballIsActiveSound from "../assets/sound/ballSound.wav";
 import ballIsInserted from "../assets/sound/insertSound2.wav";
 import RegistrationForm from "./RegistrationForm";
 import playStartSound from "../assets/sound/WinSound.wav";
+import gheeJar from "../assets/ghee2.png";
 
 type Ball = { ballColor: string; bottleId: string };
 function BallSort() {
@@ -17,12 +18,17 @@ function BallSort() {
     { ballColor: "bg-green-700", bottleId: "bottle1" },
   ]);
   const [bottle2, setBottle2] = useState<Ball[]>([
-    { ballColor: "bg-green-700", bottleId: "bottle2" },
+    { ballColor: "gheeJar", bottleId: "bottle2" },
     { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-    { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+    { ballColor: "gheeJar", bottleId: "bottle2" },
   ]);
-
+  const [bottle3, setBottle3] = useState([
+    { ballColor: "bg-green-700", bottleId: "bottle3" },
+    { ballColor: "gheeJar", bottleId: "bottle3" },
+    { ballColor: "bg-yellow-700", bottleId: "bottle3" },
+  ]);
   const [emptyBottle, setEmptyBottle] = useState<Ball[]>([]);
+  // Active ball is the ball which'll be up in the air to get into another bottle.
   const [activeBall, setActiveBall] = useState({ ballColor: "", bottleId: "" });
   const [time, setTime] = useState({ min: 0, sec: 0 });
   const [confettiProps, setConfettiProps] = useState({
@@ -44,6 +50,8 @@ function BallSort() {
             bottle1.pop();
           } else if (activeBall.bottleId === "bottle2") {
             bottle2.pop();
+          } else if (activeBall.bottleId === "bottle3") {
+            bottle3.pop();
           } else if (activeBall.bottleId === "emptyBottle") {
             emptyBottle.pop();
           }
@@ -67,6 +75,8 @@ function BallSort() {
             bottle1.pop();
           } else if (activeBall.bottleId === "bottle2") {
             bottle2.pop();
+          } else if (activeBall.bottleId === "bottle3") {
+            bottle3.pop();
           } else if (activeBall.bottleId === "emptyBottle") {
             emptyBottle.pop();
           }
@@ -81,8 +91,33 @@ function BallSort() {
         }
       }
       // Bottle3
+      else if (e.currentTarget.id === "bottle3") {
+        if (bottle3.length < 3) {
+          sound.src = ballIsInserted;
+          bottle3.push(activeBall);
+          sound.play();
+          if (activeBall.bottleId === "bottle1") {
+            bottle1.pop();
+          } else if (activeBall.bottleId === "bottle2") {
+            bottle2.pop();
+          } else if (activeBall.bottleId === "bottle3") {
+            bottle3.pop();
+          } else if (activeBall.bottleId === "emptyBottle") {
+            emptyBottle.pop();
+          }
+          bottle3[bottle3.length - 1].bottleId = "bottle3";
+
+          setActiveBall({ ballColor: "", bottleId: "" });
+        } // If the active ball is itself belongs to the current tube.
+        else if (activeBall.bottleId === "bottle3") {
+          setActiveBall({ ballColor: "", bottleId: "" });
+        } else {
+          alert("Bottle is already full");
+        }
+      }
+      // empty bottle
       else if (e.currentTarget.id === "emptyBottle") {
-        if (emptyBottle.length < 3) {
+        if (emptyBottle.length < 2) {
           sound.src = ballIsInserted;
           emptyBottle.push(activeBall);
           sound.play();
@@ -90,6 +125,8 @@ function BallSort() {
             bottle1.pop();
           } else if (activeBall.bottleId === "bottle2") {
             bottle2.pop();
+          } else if (activeBall.bottleId === "bottle3") {
+            bottle3.pop();
           } else if (activeBall.bottleId === "emptyBottle") {
             emptyBottle.pop();
           }
@@ -121,6 +158,14 @@ function BallSort() {
           sound.src = ballIsActiveSound;
           sound.play();
           setActiveBall(bottle2[bottle2.length - 1]);
+        } else {
+          alert("Bottle is empty");
+        }
+      } else if (e.currentTarget.id === "bottle3") {
+        if (bottle3[bottle3.length - 1]) {
+          sound.src = ballIsActiveSound;
+          sound.play();
+          setActiveBall(bottle3[bottle3.length - 1]);
         } else {
           alert("Bottle is empty");
         }
@@ -169,11 +214,11 @@ function BallSort() {
             { ballColor: "bg-green-700", bottleId: "bottle2" },
             { ballColor: "bg-green-700", bottleId: "bottle2" },
           ]) ||
-        JSON.stringify(emptyBottle) ===
+        JSON.stringify(bottle3) ===
           JSON.stringify([
-            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
-            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
-            { ballColor: "bg-green-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-green-700", bottleId: "bottle3" },
+            { ballColor: "bg-green-700", bottleId: "bottle3" },
+            { ballColor: "bg-green-700", bottleId: "bottle3" },
           ])) &&
       (JSON.stringify(bottle1) ===
         JSON.stringify([
@@ -187,11 +232,29 @@ function BallSort() {
             { ballColor: "bg-yellow-700", bottleId: "bottle2" },
             { ballColor: "bg-yellow-700", bottleId: "bottle2" },
           ]) ||
-        JSON.stringify(emptyBottle) ===
+        JSON.stringify(bottle3) ===
           JSON.stringify([
-            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
-            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
-            { ballColor: "bg-yellow-700", bottleId: "emptyBottle" },
+            { ballColor: "bg-yellow-700", bottleId: "bottle3" },
+            { ballColor: "bg-yellow-700", bottleId: "bottle3" },
+            { ballColor: "bg-yellow-700", bottleId: "bottle3" },
+          ])) &&
+      (JSON.stringify(bottle1) ===
+        JSON.stringify([
+          { ballColor: "gheeJar", bottleId: "bottle1" },
+          { ballColor: "gheeJar", bottleId: "bottle1" },
+          { ballColor: "gheeJar", bottleId: "bottle1" },
+        ]) ||
+        JSON.stringify(bottle2) ===
+          JSON.stringify([
+            { ballColor: "gheeJar", bottleId: "bottle2" },
+            { ballColor: "gheeJar", bottleId: "bottle2" },
+            { ballColor: "gheeJar", bottleId: "bottle2" },
+          ]) ||
+        JSON.stringify(bottle3) ===
+          JSON.stringify([
+            { ballColor: "gheeJar", bottleId: "bottle3" },
+            { ballColor: "gheeJar", bottleId: "bottle3" },
+            { ballColor: "gheeJar", bottleId: "bottle3" },
           ]))
     ) {
       // Submit form
@@ -199,18 +262,25 @@ function BallSort() {
     }
   }, [activeBall]);
   const startGame = () => {
+    // Play the  start audio.
+    const sound = new Audio();
     // Reset The whole component
     // Reset Bottles
-    setBottle1([
-      { ballColor: "bg-yellow-700", bottleId: "bottle1" },
-      { ballColor: "bg-green-700", bottleId: "bottle1" },
-      { ballColor: "bg-green-700", bottleId: "bottle1" },
-    ]);
-    setBottle2([
-      { ballColor: "bg-green-700", bottleId: "bottle2" },
-      { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-      { ballColor: "bg-yellow-700", bottleId: "bottle2" },
-    ]);
+    // setBottle1([
+    //   { ballColor: "bg-yellow-700", bottleId: "bottle1" },
+    //   { ballColor: "bg-green-700", bottleId: "bottle1" },
+    //   { ballColor: "bg-green-700", bottleId: "bottle1" },
+    // ]);
+    // setBottle2([
+    //   { ballColor: "gheeJar", bottleId: "bottle2" },
+    //   { ballColor: "bg-yellow-700", bottleId: "bottle2" },
+    //   { ballColor: "gheeJar", bottleId: "bottle2" },
+    // ]);
+    // setBottle3([
+    //   { ballColor: "bg-green-700", bottleId: "bottle3" },
+    //   { ballColor: "gheeJar", bottleId: "bottle3" },
+    //   { ballColor: "bg-yellow-700", bottleId: "bottle3" },
+    // ]);
     setEmptyBottle([]);
 
     setActiveBall({ ballColor: "", bottleId: "" });
@@ -221,8 +291,6 @@ function BallSort() {
     });
     // start the timer.
     timer();
-    // Play the  start audio.
-    const sound = new Audio();
     sound.src = playStartSound;
     sound.play();
   };
@@ -261,8 +329,8 @@ function BallSort() {
         {[time.min, ":", time.sec]}
       </div>
       {/* Bottles */}
-      <div className="flex items-center h-screen w-full  justify-center rounded-full">
-        <div className="flex space-x-10">
+      <div className="flex sm:flex-row flex-col h-5/6 w-full  justify-center rounded-full">
+        <div className="flex items-center space-x-10">
           {/* BOTTLE 1 */}
           <div
             className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20  rounded-b-full cursor-pointer  border-t-4 rounded-t-lg backdrop-blur-sm"
@@ -274,11 +342,11 @@ function BallSort() {
             {bottle1.map((ball, i) => (
               <img
                 src={
-                  ball.ballColor === "bg-yellow-700"
-                    ? yellowBall
+                  ball.ballColor === "gheeJar"
+                    ? gheeJar
                     : ball.ballColor === "bg-green-700"
                     ? greenBall
-                    : ""
+                    : yellowBall
                 }
                 key={ball.bottleId + i}
                 className={` ${
@@ -304,11 +372,11 @@ function BallSort() {
             {bottle2.map((ball, i) => (
               <img
                 src={
-                  ball.ballColor === "bg-yellow-700"
-                    ? yellowBall
+                  ball.ballColor === "gheeJar"
+                    ? gheeJar
                     : ball.ballColor === "bg-green-700"
                     ? greenBall
-                    : ""
+                    : yellowBall
                 }
                 key={ball.bottleId + i}
                 className={` ${
@@ -322,37 +390,66 @@ function BallSort() {
             ))}
           </div>
 
-          {/* EMPTY BOTTLE  */}
+          {/* BOTTLE 3 */}
 
-          <div>
-            <div
-              className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20  rounded-b-full cursor-pointer   border-t-4 backdrop-blur-sm
+          <div
+            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-56 w-20 rounded-b-full cursor-pointer border-t-4 backdrop-blur-sm"
+            id="bottle3"
+            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+              BallsMovementHandler(e)
+            }
+          >
+            {bottle3.map((ball, i) => (
+              <img
+                src={
+                  ball.ballColor === "gheeJar"
+                    ? gheeJar
+                    : ball.ballColor === "bg-green-700"
+                    ? greenBall
+                    : yellowBall
+                }
+                key={ball.bottleId + i}
+                className={` ${
+                  i == bottle3.length - 1 &&
+                  activeBall.ballColor == ball.ballColor &&
+                  activeBall.bottleId == ball.bottleId
+                    ? `-translate-y-48 duration-300 ease-in-out`
+                    : "duration-300 ease-in-out"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+        {/* EMPTY BOTTLE  */}
+
+        <div className="flex justify-end flex-wrap-reverse">
+          <div
+            className="flex flex-col-reverse border-x-4 border-gray-100  border-b-2 h-32  w-20  rounded-b-full cursor-pointer   border-t-4 backdrop-blur-sm
           "
-              id="emptyBottle"
-              onClick={(e: React.MouseEvent<HTMLDivElement>) =>
-                BallsMovementHandler(e)
-              }
-            >
-              {emptyBottle.map((ball, i) => (
-                <img
-                  src={
-                    ball.ballColor === "bg-yellow-700"
-                      ? yellowBall
-                      : ball.ballColor === "bg-green-700"
-                      ? greenBall
-                      : ""
-                  }
-                  key={ball.bottleId + i}
-                  className={` ${
-                    i == emptyBottle.length - 1 &&
-                    activeBall.ballColor == ball.ballColor &&
-                    activeBall.bottleId == ball.bottleId
-                      ? "-translate-y-60 duration-300 ease-in-out"
-                      : "duration-300 ease-in-out"
-                  }`}
-                />
-              ))}
-            </div>
+            id="emptyBottle"
+            onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+              BallsMovementHandler(e)
+            }
+          >
+            {emptyBottle.map((ball, i) => (
+              <img
+                src={
+                  ball.ballColor === "gheeJar"
+                    ? gheeJar
+                    : ball.ballColor === "bg-green-700"
+                    ? greenBall
+                    : yellowBall
+                }
+                key={ball.bottleId + i}
+                className={` ${
+                  i == emptyBottle.length - 1 &&
+                  activeBall.ballColor == ball.ballColor &&
+                  activeBall.bottleId == ball.bottleId
+                    ? "-translate-y-60 duration-300 ease-in-out"
+                    : "duration-300 ease-in-out"
+                }`}
+              />
+            ))}
           </div>
         </div>
       </div>
