@@ -155,7 +155,7 @@ function BallSort() {
       }
       // empty bottle
       else if (e.currentTarget.id === "emptyBottle") {
-        if (emptyBottle.length < 4) {
+        if (emptyBottle.length < 3) {
           sound.src = ballIsInserted;
           emptyBottle.push(activeBall);
           sound.play();
